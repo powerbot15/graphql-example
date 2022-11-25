@@ -6,15 +6,14 @@ import { useState } from 'react';
 
 function App() {
   const [page, setPage] = useState(1);
-  const GET_ANIMES = gql`
-  query GetAnimes {
-    Page(page: ${page}, perPage: 20) {
+  const GET_PAGES = gql`
+  query GetPages {
+    Page(page: 1, perPage: 20) {
       pageInfo{
-        total
+        lastPage
       }
       media {
         id
-        idMal
         type
         title {
           english,
@@ -24,7 +23,11 @@ function App() {
     }
   }
 `;
-  const { loading, error, data } = useQuery(GET_ANIMES);
+  const { loading, error, data } = useQuery(GET_PAGES);
+
+  if (loading) {
+      return <div className="loading-indicator">Loading...</div>;
+  }
 
   if (error) {
     console.dir(error);
@@ -34,9 +37,10 @@ function App() {
   console.dir(data);
 
   return (
-    <div className="App">
-      <AnimeList list={loading ? [] : data.Page.media} isLoading={loading}/>
-      <Pagination page={page} total={loading ? 0 : data.Page.pageInfo.total} onPaginationChange={(moveTo) => {
+    <div>
+      <h1 className="title">Fetch media by GraphQL queries</h1>
+      <AnimeList page={page}/>
+      <Pagination page={page} total={data.Page.pageInfo.lastPage} onPaginationChange={(moveTo) => {
         setPage(page + moveTo);
       }}/>
     </div>
