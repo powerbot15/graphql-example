@@ -1,4 +1,5 @@
 import { useQuery, gql } from '@apollo/client';
+import {useEffect} from "react";
 
 export function AnimeList(props) {
     const GET_ANIMES = gql`
@@ -16,7 +17,12 @@ export function AnimeList(props) {
       }
     `;
     const {loading, error, data} = useQuery(GET_ANIMES);
-
+    useEffect(() => {
+       const list = (data && data.Page && data.Page.media) || [];
+       if (list.length && props.activeItemId === null) {
+           props.onItemSelect(list[0].id);
+       }
+    });
     if (error) {
         return 'Error';
     }
@@ -24,7 +30,9 @@ export function AnimeList(props) {
     const mediaList = data ? data.Page.media : [];
     const list = mediaList.map((animeData) => {
         const title = animeData.title.english || animeData.title.native
-        return <li key={animeData.id}>
+        return <li key={animeData.id} className="anime-list__item" onClick={()=>{
+            props.onItemSelect(animeData.id)
+        }}>
             {title}
         </li>
     });

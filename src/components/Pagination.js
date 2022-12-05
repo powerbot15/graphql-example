@@ -1,6 +1,6 @@
 export function Pagination (props) {
 
-    return <div>
+    return <div className="pagination-area">
         <button disabled={props.page === 1} type="button" onClick={() => {props.onPaginationChange(-1)}}>Prev</button>
         <span>{props.page || 'N/A'}</span>
         of

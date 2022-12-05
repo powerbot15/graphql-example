@@ -1,11 +1,13 @@
 import './App.css';
 import { useQuery, gql } from '@apollo/client';
 import { AnimeList } from './components/AnimeList';
+import { AnimeDetails } from './components/AnimeDetails';
 import { Pagination } from './components/Pagination';
 import { useState } from 'react';
 
 function App() {
   const [page, setPage] = useState(1);
+  const [activeItemId, setActiveItemId] = useState(null);
   const GET_PAGES = gql`
   query GetPages {
     Page(page: 1, perPage: 20) {
@@ -37,11 +39,17 @@ function App() {
   console.dir(data);
 
   return (
-    <div>
+    <div className="app">
       <h1 className="title">Fetch media by GraphQL queries</h1>
-      <AnimeList page={page}/>
+      <div className="anime-wrapper">
+          <AnimeList page={page} onItemSelect={(id)=>{
+              setActiveItemId(id);
+          }} activeItemId={activeItemId}/>
+          {activeItemId ? <AnimeDetails animeId={activeItemId}/> : 'Select Anime to view details'}
+      </div>
       <Pagination page={page} total={data.Page.pageInfo.lastPage} onPaginationChange={(moveTo) => {
         setPage(page + moveTo);
+        setActiveItemId(null);
       }}/>
     </div>
   );

@@ -17,14 +17,53 @@ ul, ol {
 .loading-indicator_padding100 {
   padding-top: 100px;
 }
+
 .title {
   text-align: center;
 }
 
+.anime-wrapper {
+  display: flex;
+}
+
 .anime-list-container {
   height: 450px;
+  box-shadow: 0 0 5px #ABABAB;
 }
 
 .anime-list {
   padding: 25px;
+  max-height: 400px;
+  min-width: 450px;
+  overflow-y: auto;
+}
+
+.anime-details {
+  padding: 35px;
+  display: flex;
+}
+
+.anime-list__item {
+  cursor: pointer;
+  padding: 10px;
+  transition: all 0.3s linear 0s;
+  background-color: transparent;
+}
+
+.anime-list__item:hover {
+  background-color: #CDCDCD;
+}
+
+.anime-details__description {
+  padding-left: 25px;
+}
+
+.app {
+  width: 90%;
+  margin: auto;
+}
+
+.pagination-area {
+  text-align: center;
+  padding: 10px;
 }
